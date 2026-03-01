@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-# Fix Windows OpenMP conflict (libiomp5md.dll vs libomp140.x86_64.dll)
+
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 _model = None
