@@ -1,9 +1,4 @@
-"""
-integrations_service.py
-────────────────────────
-Google Calendar OAuth2 (full flow), Notion OAuth2 (full flow), Todos.
-All credentials come from .env via config.py — zero hardcoding.
-"""
+
 
 import httpx
 import json
@@ -19,9 +14,7 @@ from config import (
 
 GOOGLE_TOKEN_FILE = BASE_DIR / "data" / "google_tokens.json"
 
-# ═══════════════════════════════════════════════════════
-# GOOGLE OAUTH2 TOKEN MANAGEMENT
-# ═══════════════════════════════════════════════════════
+
 
 def _load_tokens() -> dict:
     if GOOGLE_TOKEN_FILE.exists():
@@ -137,10 +130,6 @@ def google_connected() -> bool:
     tokens = _load_tokens()
     return bool(tokens.get("access_token"))
 
-
-# ═══════════════════════════════════════════════════════
-# GOOGLE CALENDAR
-# ═══════════════════════════════════════════════════════
 
 async def get_calendar_events(days_ahead: int = 14) -> list:
     try:
@@ -262,10 +251,6 @@ def _mock_events() -> list:
     ]
 
 
-# ═══════════════════════════════════════════════════════
-# NOTION TOKEN MANAGEMENT (OAuth2)
-# ═══════════════════════════════════════════════════════
-
 def _load_notion_tokens() -> dict:
     """Load Notion OAuth2 tokens from file."""
     if NOTION_TOKEN_FILE.exists():
@@ -340,9 +325,6 @@ def disconnect_notion():
         NOTION_TOKEN_FILE.unlink()
 
 
-# ═══════════════════════════════════════════════════════
-# NOTION API HELPERS
-# ═══════════════════════════════════════════════════════
 
 def _notion_headers() -> dict:
     return {
@@ -351,9 +333,6 @@ def _notion_headers() -> dict:
         "Content-Type":   "application/json",
     }
 
-# ═══════════════════════════════════════════════════════
-# NOTION PAGES
-# ═══════════════════════════════════════════════════════
 
 async def get_notion_pages(query: str = "") -> list:
     token = _get_notion_access_token()
@@ -450,10 +429,6 @@ def get_notion_workspace_info() -> dict:
         "saved_at":       stored.get("saved_at", ""),
     }
 
-
-# ═══════════════════════════════════════════════════════
-# TODOS (local SQLite)
-# ═══════════════════════════════════════════════════════
 
 async def get_todos(db, project_id: int = None) -> list:
     if db is None:
@@ -567,10 +542,6 @@ def _mock_todos() -> list:
         },
     ]
 
-
-# ═══════════════════════════════════════════════════════
-# INTEGRATION STATUS
-# ═══════════════════════════════════════════════════════
 
 def get_integration_status() -> dict:
     google_tokens = _load_tokens()
