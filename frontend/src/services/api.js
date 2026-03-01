@@ -10,7 +10,7 @@ api.interceptors.response.use(
   }
 )
 
-// ── Projects ─────────────────────────────────────────
+//  Projects
 export const getProjects     = ()       => api.get('/projects')
 export const createProject   = (name)   => api.post('/projects', { name })
 export const deleteProject   = (id)     => api.delete(`/projects/${id}`)
@@ -33,18 +33,18 @@ export const exportProject   = (id) => {
   document.body.appendChild(a); a.click(); document.body.removeChild(a)
 }
 
-// ── Papers ────────────────────────────────────────────
+// Papers
 export const searchPapers    = (d)      => api.post('/papers/search', d)
 export const savePaper       = (d)      => api.post('/papers/save', d)
 export const deletePaper     = (id)     => api.delete(`/papers/${id}`)
 export const listPapers      = ()       => api.get('/papers')
 
-// ── Chat + MCP ────────────────────────────────────────
+// Chat + MCP 
 export const sendChat        = (d)      => api.post('/chat', d)
 export const callTool        = (t, p)   => api.post('/tools/call', { tool: t, params: p })
 export const getTools        = ()       => api.get('/tools')
 
-// ── Streaming section writer ──────────────────────────
+// Streaming section writer 
 export const streamSection = (pid, body, onToken, onDone) =>
   new Promise((resolve, reject) => {
     fetch(`/api/v3/projects/${pid}/stream-section`, {
@@ -72,31 +72,31 @@ export const streamSection = (pid, body, onToken, onDone) =>
     }).catch(reject)
   })
 
-// ── Google OAuth2 ─────────────────────────────────────
+//Google OAuth2 
 export const getGoogleAuthUrl    = ()   => api.get('/integrations/google/auth-url')
 export const getGoogleStatus     = ()   => api.get('/integrations/google/status')
 export const disconnectGoogle    = ()   => api.delete('/integrations/google/disconnect')
 export const saveGoogleTok       = (t, r='') => api.post('/integrations/google/token', { access_token: t, refresh_token: r })
 
-// ── Calendar ──────────────────────────────────────────
+// Calendar 
 export const getCalendar         = (d=14) => api.get(`/integrations/calendar?days=${d}`)
 export const createEvent         = (d)    => api.post('/integrations/calendar', d)
 
-// ── Notion OAuth2 ────────────────────────────────────
+// Notion OAuth2 
 export const getNotionAuthUrl    = ()     => api.get('/integrations/notion/auth-url')
 export const getNotionStatus     = ()     => api.get('/integrations/notion/status')
 export const disconnectNotion    = ()     => api.delete('/integrations/notion/disconnect')
 
-// ── Notion pages ─────────────────────────────────────
+//Notion pages 
 export const getNotion           = (q='') => api.get(`/integrations/notion${q ? '?q=' + encodeURIComponent(q) : ''}`)
 export const createNotion        = (d)    => api.post('/integrations/notion', d)
 
-// ── Todos ─────────────────────────────────────────────
+// Todos 
 export const getTodos            = (pid)  => api.get(`/todos${pid ? '?project_id=' + pid : ''}`)
 export const createTodo          = (d)    => api.post('/todos', d)
 export const toggleTodo          = (id)   => api.patch(`/todos/${id}/toggle`)
 export const deleteTodo          = (id)   => api.delete(`/todos/${id}`)
 
-// ── Status ────────────────────────────────────────────
+// Status 
 export const getNotifications    = ()     => api.get('/notifications')
 export const checkHealth         = ()     => axios.get('/health').then(r => r.data)
