@@ -1,4 +1,4 @@
-# CiteMind v3 — Setup Guide
+# CiteMind  — Setup Guide
 
 ## Quick Start (2 terminals)
 
@@ -22,7 +22,7 @@ Open: **http://localhost:3000**
 
 ---
 
-## What's in v3
+## What's in 
 
 ###  Fixed
 - 500 errors on paper search — completely rewritten
