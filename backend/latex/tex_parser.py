@@ -1,9 +1,4 @@
-"""
-tex_parser.py — parse and rebuild LaTeX without destroying structure.
 
-The key insight: upsert only replaces a section's BODY, keeping all
-surrounding content (maketitle, abstract env, bibliography, etc.) intact.
-"""
 import re
 from pathlib import Path
 from typing import Dict
