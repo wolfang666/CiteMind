@@ -1,8 +1,4 @@
-"""
-section_manager.py
-Upserts sections in-place using tex_parser.upsert_section(),
-which preserves all surrounding LaTeX structure.
-"""
+
 from pathlib import Path
 from .tex_parser import load_tex, split_sections, upsert_section
 
