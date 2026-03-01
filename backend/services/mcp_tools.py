@@ -1,10 +1,4 @@
-"""
-mcp_tools.py  — CiteMind Tool Registry
-────────────────────────────────────────
-Every capability is a registered "tool" callable by name.
-The AI Copilot (and external MCP clients) call tools by name + params.
-Tools return structured JSON results + human-readable summaries.
-"""
+
 
 import json
 import asyncio
@@ -13,7 +7,6 @@ from utils.logger import get_logger
 
 log = get_logger(__name__)
 
-# ── Tool Registry ─────────────────────────────────────
 _TOOLS: dict[str, dict] = {}
 
 
@@ -50,9 +43,7 @@ async def call_tool(name: str, params: dict, db=None) -> dict:
         return {"error": str(e), "tool": name}
 
 
-# ══════════════════════════════════════════════════════
-# PAPER SEARCH TOOLS
-# ══════════════════════════════════════════════════════
+
 
 @tool("search_papers", "Search academic papers across CrossRef, Semantic Scholar, OpenAlex, and arXiv simultaneously",
       {"query": "string — search query", "sources": "list[str] — optional filter", "limit": "int — results per source (default 4)"})
@@ -97,9 +88,6 @@ async def _save_paper(project_id: str, title: str, authors: str = "", year: str 
             "summary": f"Saved \\cite{{{stored['cite_key']}}} to references.bib"}
 
 
-# ══════════════════════════════════════════════════════
-# LATEX WRITING TOOLS
-# ══════════════════════════════════════════════════════
 
 @tool("write_section", "Write a LaTeX section using AI",
       {"project_id": "string", "section_name": "string", "context": "string", "instructions": "string (optional)"})
@@ -155,9 +143,6 @@ async def _get_sections(project_id: str, db=None) -> dict:
     return {"sections": sections, "summary": f"{len(sections)} sections: {', '.join(sections)}"}
 
 
-# ══════════════════════════════════════════════════════
-# CITATION TOOLS
-# ══════════════════════════════════════════════════════
 
 @tool("verify_citations", "Verify all citations in the paper against .bib file",
       {"project_id": "string"})
@@ -183,9 +168,6 @@ async def _generate_bibtex(title: str, authors: str, year: str, doi: str = "", d
     return {"bibtex": bibtex, "summary": f"Generated BibTeX entry for '{title}'"}
 
 
-# ══════════════════════════════════════════════════════
-# TODO / CALENDAR TOOLS
-# ══════════════════════════════════════════════════════
 
 @tool("list_todos", "List all todo tasks",
       {"project_id": "int (optional)"})
@@ -231,9 +213,7 @@ async def _create_meeting(title: str, start: str, end: str, with_meet: bool = Tr
     return {**result, "summary": summary}
 
 
-# ══════════════════════════════════════════════════════
-# NOTION TOOLS
-# ══════════════════════════════════════════════════════
+
 
 @tool("search_notion", "Search Notion pages",
       {"query": "string"})
@@ -252,9 +232,6 @@ async def _create_notion(title: str, content: str, db=None) -> dict:
     return {**result, "summary": f"Created Notion page: '{title}'"}
 
 
-# ══════════════════════════════════════════════════════
-# PROJECT TOOLS
-# ══════════════════════════════════════════════════════
 
 @tool("export_project", "Export project as a ZIP (tex + bib + pdf-ready)",
       {"project_id": "string"})
