@@ -4,14 +4,14 @@ import { sendChat, callTool, getTools, streamSection } from '../../services/api'
 import toast from 'react-hot-toast'
 
 const QUICK_ACTIONS = [
-  { label: 'Abstract',    icon: '✍️', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Abstract',     context: 'concise research paper abstract' }) },
-  { label: 'Intro',       icon: '📝', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Introduction', context: 'paper introduction and motivation' }) },
-  { label: 'Methods',     icon: '🔬', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Methodology',  context: 'research methodology and approach' }) },
-  { label: 'Conclusion',  icon: '🎯', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Conclusion',   context: 'conclusion and future work' }) },
-  { label: 'Verify',      icon: '✅', tool: 'verify_citations',  params: pid => ({ project_id: pid }) },
-  { label: 'Stats',       icon: '📊', tool: 'get_project_stats', params: pid => ({ project_id: pid }) },
-  { label: 'Calendar',    icon: '📅', tool: 'get_calendar_events', params: () => ({ days: 7 }) },
-  { label: 'Todos',       icon: '☑️', tool: 'list_todos',        params: () => ({}) },
+  { label: 'Abstract',    icon: '', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Abstract',     context: 'concise research paper abstract' }) },
+  { label: 'Intro',       icon: '', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Introduction', context: 'paper introduction and motivation' }) },
+  { label: 'Methods',     icon: '', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Methodology',  context: 'research methodology and approach' }) },
+  { label: 'Conclusion',  icon: '', tool: 'write_section',     params: pid => ({ project_id: pid, section_name: 'Conclusion',   context: 'conclusion and future work' }) },
+  { label: 'Verify',      icon: '', tool: 'verify_citations',  params: pid => ({ project_id: pid }) },
+  { label: 'Stats',       icon: '', tool: 'get_project_stats', params: pid => ({ project_id: pid }) },
+  { label: 'Calendar',    icon: '', tool: 'get_calendar_events', params: () => ({ days: 7 }) },
+  { label: 'Todos',       icon: '', tool: 'list_todos',        params: () => ({}) },
 ]
 
 function ToolResult({ result }) {
@@ -75,7 +75,7 @@ function Msg({ m, onInsertIntoPaper }) {
 export default function Copilot({ project, llm, onStreamDone, onRefresh, onInsertText }) {
   const [msgs, setMsgs]   = useState([{
     role: 'assistant',
-    content: `Hi! I'm CiteMind Copilot ⚡\n\nI can:\n• Stream LaTeX sections directly into the editor\n• Search papers from 4 sources\n• Verify citations\n• Check calendar & todos\n• Insert AI responses into your paper\n\nTry: "write introduction about transformers"`
+    content: `Hi! I'm CiteMind Copilot \n\nI can:\n• Stream LaTeX sections directly into the editor\n• Search papers from 4 sources\n• Verify citations\n• Check calendar & todos\n• Insert AI responses into your paper\n\nTry: "write introduction about transformers"`
   }])
   const [input, setInput] = useState('')
   const [busy,  setBusy]  = useState(false)
@@ -139,14 +139,14 @@ export default function Copilot({ project, llm, onStreamDone, onRefresh, onInser
       }
       if (result.todos) {
         const pending = result.todos.filter(t => !t.done).slice(0, 6)
-        display = `📋 ${result.pending_count || pending.length} tasks:\n${pending.map(t => `• [${t.priority}] ${t.title}${t.due_date ? ' (' + t.due_date + ')' : ''}`).join('\n')}`
+        display = ` ${result.pending_count || pending.length} tasks:\n${pending.map(t => `• [${t.priority}] ${t.title}${t.due_date ? ' (' + t.due_date + ')' : ''}`).join('\n')}`
       }
       if (result.events) {
-        display = `📅 ${result.count} upcoming:\n${result.events.slice(0, 5).map(e => `• ${e.title}${e.meet_link ? ' 🎥' : ''}${e.start ? ' · ' + e.start.slice(0, 10) : ''}`).join('\n')}`
+        display = ` ${result.count} upcoming:\n${result.events.slice(0, 5).map(e => `• ${e.title}${e.meet_link ? ' ' : ''}${e.start ? ' · ' + e.start.slice(0, 10) : ''}`).join('\n')}`
       }
       if (result.results) {
         const papers = result.results.all || []
-        display = `📚 ${result.results.total} papers:\n${papers.slice(0, 4).map(p => `• ${p.title.slice(0, 65)} (${p.year || 'n.d.'}) [${p.source}]`).join('\n')}`
+        display = ` ${result.results.total} papers:\n${papers.slice(0, 4).map(p => `• ${p.title.slice(0, 65)} (${p.year || 'n.d.'}) [${p.source}]`).join('\n')}`
       }
       updateLast(display, result)
     } catch (e) { updateLast(`Error: ${e.message}`) }
@@ -220,7 +220,7 @@ export default function Copilot({ project, llm, onStreamDone, onRefresh, onInser
   }, [input, busy, project, streamWrite, runTool, onInsertText, onRefresh, updateLast])
 
   const b = llm?.backend || 'mock'
-  const llmLabel = { groq: '⚡ Groq', ollama: '🖥 Ollama', claude: '☁️ Claude', mock: '🤖 Mock' }[b] || b
+  const llmLabel = { groq: ' Groq', ollama: '🖥 Ollama', claude: '☁️ Claude', mock: ' Mock' }[b] || b
 
   return (
     <div style={{ width: 300, background: 'var(--bg2)', borderLeft: '1px solid var(--border)', display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
