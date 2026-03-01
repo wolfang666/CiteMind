@@ -4,7 +4,6 @@ import { FileText, Play, AlertTriangle, CheckCircle, XCircle, Eye, Code, Chevron
 import { compileLatex, getPdfUrl } from '../../services/api'
 import toast from 'react-hot-toast'
 
-// ── Compiler Output Panel ─────────────────────────────────────────
 function CompilerPanel({ pid, output, compiling, onCompile }) {
   const [pdfVisible, setPdfVisible] = useState(false)
   const pdfUrl = pid ? getPdfUrl(pid) : null
@@ -82,7 +81,7 @@ function CompilerPanel({ pid, output, compiling, onCompile }) {
   )
 }
 
-// ── Main Editor ───────────────────────────────────────────────────
+
 export default function LatexEditor({ pid, value, onChange, onSave }) {
   const editorRef   = useRef(null)
   const monacoRef   = useRef(null)
