@@ -1,9 +1,4 @@
-"""
-generation_service.py
-─────────────────────
-Backends: groq (primary) → ollama → claude → mock
-All config read from .env via config.py
-"""
+
 import httpx
 from config import (GROQ_API_KEY, GROQ_MODEL, GROQ_BASE_URL,
                     ANTHROPIC_KEY, OLLAMA_URL, OLLAMA_MODEL, LLM_BACKEND)
