@@ -1,15 +1,3 @@
-"""
-paper_search_service.py
-────────────────────────
-Searches 4 free academic APIs simultaneously:
-  1. CrossRef        — DOI metadata, 100M+ papers
-  2. Semantic Scholar — AI/CS focused, abstracts, citations
-  3. OpenAlex        — Open metadata, 250M+ works
-  4. arXiv           — Preprints (free, no key)
-
-Returns unified Paper objects, deduped by title similarity.
-"""
-
 import asyncio
 import httpx
 import re
@@ -20,9 +8,6 @@ log = get_logger(__name__)
 HEADERS = {"User-Agent": "CiteMind/3.0 (research tool; mailto:research@citemind.app)"}
 
 
-# ─────────────────────────────────────────────────────
-# Normalizers
-# ─────────────────────────────────────────────────────
 
 def _make_key(title: str, year, authors: str) -> str:
     from utils.helpers import slugify
@@ -38,9 +23,7 @@ def _clean(text: str) -> str:
     return re.sub(r"\s+", " ", text.strip())
 
 
-# ─────────────────────────────────────────────────────
-# CrossRef
-# ─────────────────────────────────────────────────────
+
 
 async def search_crossref(query: str, rows: int = 5) -> list:
     try:
@@ -82,9 +65,6 @@ async def search_crossref(query: str, rows: int = 5) -> list:
         return []
 
 
-# ─────────────────────────────────────────────────────
-# Semantic Scholar
-# ─────────────────────────────────────────────────────
 
 async def search_semantic(query: str, limit: int = 5) -> list:
     try:
@@ -123,10 +103,6 @@ async def search_semantic(query: str, limit: int = 5) -> list:
         log.warning(f"Semantic Scholar error: {e}")
         return []
 
-
-# ─────────────────────────────────────────────────────
-# OpenAlex
-# ─────────────────────────────────────────────────────
 
 async def search_openalex(query: str, per_page: int = 5) -> list:
     try:
@@ -173,9 +149,6 @@ async def search_openalex(query: str, per_page: int = 5) -> list:
         return []
 
 
-# ─────────────────────────────────────────────────────
-# arXiv
-# ─────────────────────────────────────────────────────
 
 async def search_arxiv(query: str, max_results: int = 5) -> list:
     try:
@@ -223,9 +196,6 @@ async def search_arxiv(query: str, max_results: int = 5) -> list:
         return []
 
 
-# ─────────────────────────────────────────────────────
-# Combined search — all 4 sources in parallel
-# ─────────────────────────────────────────────────────
 
 def _dedup(papers: list) -> list:
     seen = set()
