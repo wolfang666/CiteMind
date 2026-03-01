@@ -1,4 +1,4 @@
-"""MCP Tool: edit_section — edit existing LaTeX section text."""
+
 
 from config import PROJECTS_DIR
 
