@@ -28,9 +28,6 @@ const isToday    = d => { const n = new Date(); return d.getDate() === n.getDate
 const isTomorrow = d => { const n = new Date(); n.setDate(n.getDate() + 1); return d.getDate() === n.getDate() && d.getMonth() === n.getMonth() }
 
 
-// ══════════════════════════════════════════════════════
-// SHARED: OAUTH CONNECT PANEL (works for Google & Notion)
-// ══════════════════════════════════════════════════════
 function OAuthPanel({ connected, workspaceName, providerName, providerColor, onConnect, onDisconnect, loading }) {
   return (
     <div style={{
@@ -77,9 +74,6 @@ function OAuthPanel({ connected, workspaceName, providerName, providerColor, onC
 }
 
 
-// ══════════════════════════════════════════════════════
-// GOOGLE AUTH PANEL
-// ══════════════════════════════════════════════════════
 function GoogleAuthPanel({ connected, onStatusChange }) {
   const [loading, setLoading] = useState(false)
   const popupRef = useRef(null)
@@ -135,10 +129,6 @@ function GoogleAuthPanel({ connected, onStatusChange }) {
   )
 }
 
-
-// ══════════════════════════════════════════════════════
-// NOTION AUTH PANEL
-// ══════════════════════════════════════════════════════
 function NotionAuthPanel({ connected, workspaceName, onStatusChange }) {
   const [loading, setLoading] = useState(false)
   const popupRef = useRef(null)
@@ -200,9 +190,6 @@ function NotionAuthPanel({ connected, workspaceName, onStatusChange }) {
 }
 
 
-// ══════════════════════════════════════════════════════
-// CALENDAR TAB
-// ══════════════════════════════════════════════════════
 function CalendarTab() {
   const [events,    setEvents]    = useState([])
   const [loading,   setLoading]   = useState(true)
@@ -231,9 +218,9 @@ function CalendarTab() {
       const startISO = new Date(form.start).toISOString()
       const endISO   = form.end ? new Date(form.end).toISOString() : new Date(+new Date(form.start) + 3600000).toISOString()
       const r = await createEvent({ ...form, start: startISO, end: endISO })
-      if (r.mock) toast('Created (mock — connect Google for real sync)', { icon: 'ℹ️' })
+      if (r.mock) toast('Created (mock — connect Google for real sync)', { icon: '' })
       else toast.success('Event created in Google Calendar!')
-      if (r.meet_link) toast(`🎥 ${r.meet_link}`, { duration: 7000 })
+      if (r.meet_link) toast(` ${r.meet_link}`, { duration: 7000 })
       setShowForm(false)
       setForm({ title: '', start: '', end: '', description: '', with_meet: true })
       load()
@@ -335,9 +322,6 @@ function CalendarTab() {
 }
 
 
-// ══════════════════════════════════════════════════════
-// TODO TAB
-// ══════════════════════════════════════════════════════
 const P = {
   high:   { c: 'var(--red)',    bg: 'var(--rbg)' },
   medium: { c: 'var(--orange)', bg: 'var(--obg)' },
@@ -392,9 +376,9 @@ function TodoTab({ project }) {
           <input placeholder="New task… (Enter to add)" value={title} onChange={e => setTitle(e.target.value)}
             onKeyDown={e => e.key === 'Enter' && add()} style={{ flex: 1 }} />
           <select value={priority} onChange={e => setPriority(e.target.value)} style={{ width: 110 }}>
-            <option value="high">🔴 High</option>
-            <option value="medium">🟡 Medium</option>
-            <option value="low">🟢 Low</option>
+            <option value="high"> High</option>
+            <option value="medium"> Medium</option>
+            <option value="low">Low</option>
           </select>
           <input type="date" value={due} onChange={e => setDue(e.target.value)} style={{ width: 130 }} />
           <button className="btn btn-primary btn-sm" onClick={add} disabled={adding || !title.trim()}>
@@ -424,7 +408,7 @@ function TodoTab({ project }) {
                 {t.done ? <CheckSquare size={16} /> : <Square size={16} />}
               </button>
               <span style={{ flex: 1, fontSize: 13, textDecoration: t.done ? 'line-through' : 'none', color: t.done ? 'var(--t3)' : 'var(--t1)' }}>{t.title}</span>
-              {t.due_date && <span style={{ fontSize: 10, color: 'var(--t3)', whiteSpace: 'nowrap' }}>📅 {t.due_date}</span>}
+              {t.due_date && <span style={{ fontSize: 10, color: 'var(--t3)', whiteSpace: 'nowrap' }}> {t.due_date}</span>}
               <span style={{ padding: '2px 7px', borderRadius: 4, background: pc.bg, color: pc.c, fontSize: 10, fontWeight: 700, whiteSpace: 'nowrap' }}>
                 <Flag size={8} style={{ display: 'inline', marginRight: 2 }} />{t.priority}
               </span>
@@ -442,9 +426,6 @@ function TodoTab({ project }) {
 }
 
 
-// ══════════════════════════════════════════════════════
-// NOTION TAB  — full OAuth2 + pages + create note
-// ══════════════════════════════════════════════════════
 function NotionTab() {
   const [connected,      setConnected]      = useState(false)
   const [workspaceName,  setWorkspaceName]  = useState('')
@@ -648,10 +629,6 @@ function NotionTab() {
   )
 }
 
-
-// ══════════════════════════════════════════════════════
-// ROOT EXPORT
-// ══════════════════════════════════════════════════════
 export default function IntegrationsView({ project, initialTab }) {
   const [tab, setTab] = useState(initialTab || 'calendar')
   return (
@@ -661,9 +638,9 @@ export default function IntegrationsView({ project, initialTab }) {
         <p style={{ color: 'var(--t3)', fontSize: 12, marginTop: 3 }}>Google Calendar · Notion · Todos</p>
       </div>
       <div className="tabs" style={{ width: 'fit-content' }}>
-        <button className={`tab ${tab === 'calendar' ? 'active' : ''}`} onClick={() => setTab('calendar')}>📅 Calendar & Meet</button>
-        <button className={`tab ${tab === 'todos'    ? 'active' : ''}`} onClick={() => setTab('todos')}>✅ Tasks</button>
-        <button className={`tab ${tab === 'notion'   ? 'active' : ''}`} onClick={() => setTab('notion')}>📝 Notion</button>
+        <button className={`tab ${tab === 'calendar' ? 'active' : ''}`} onClick={() => setTab('calendar')}> Calendar & Meet</button>
+        <button className={`tab ${tab === 'todos'    ? 'active' : ''}`} onClick={() => setTab('todos')}> Tasks</button>
+        <button className={`tab ${tab === 'notion'   ? 'active' : ''}`} onClick={() => setTab('notion')}> Notion</button>
       </div>
       {tab === 'calendar' && <CalendarTab />}
       {tab === 'todos'    && <TodoTab project={project} />}
