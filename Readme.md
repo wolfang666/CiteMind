@@ -24,12 +24,12 @@ Open: **http://localhost:3000**
 
 ## What's in v3
 
-### ✅ Fixed
+###  Fixed
 - 500 errors on paper search — completely rewritten
 - Papers library now searches 4 APIs simultaneously
 - All tools wired up end-to-end
 
-### 🆕 Features
+###  Features
 | Feature | Details |
 |---|---|
 | 4-source paper search | CrossRef + Semantic Scholar + OpenAlex + arXiv — all free, no key |
@@ -51,7 +51,7 @@ set NOTION_TOKEN=secret_...      # Notion integration
 set LLM_BACKEND=groq             # Force backend: groq|ollama|claude|mock
 ```
 
-⚠️ Rotate your Groq key at https://console.groq.com — old key was shared.
+ Rotate your Groq key at https://console.groq.com — old key was shared.
 
 ---
 
