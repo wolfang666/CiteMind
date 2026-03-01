@@ -13,7 +13,7 @@ import NotificationsView from './components/Integrations/NotificationsView.jsx'
 import { usePaperState } from './hooks/usePaperState.js'
 import { checkHealth, verifyCitations, getNotifications, exportProject } from './services/api.js'
 
-// ── Persist view + project across page refreshes ──────────────────
+
 const SS = {
   getView: ()  => sessionStorage.getItem('cm_view') || 'dashboard',
   setView: (v) => sessionStorage.setItem('cm_view', v),
@@ -44,7 +44,7 @@ export default function App() {
   const texRef = useRef(tex)
   useEffect(() => { texRef.current = tex }, [tex])
 
-  // ── Health check ─────────────────────────────────────────────
+
   useEffect(() => {
     const check = async () => {
       try { const h = await checkHealth(); setServerOk(true); if (h.llm) setLlm(h.llm) }
@@ -53,7 +53,6 @@ export default function App() {
     check(); const t = setInterval(check, 20000); return () => clearInterval(t)
   }, [])
 
-  // ── Notification badge ────────────────────────────────────────
   useEffect(() => {
     const load = async () => {
       try { const n = await getNotifications(); setNotifCount(n.length) } catch {}
@@ -61,7 +60,7 @@ export default function App() {
     load(); const t = setInterval(load, 60000); return () => clearInterval(t)
   }, [])
 
-  // ── Topbar handlers ───────────────────────────────────────────
+
   const handleSave = useCallback(() => {
     if (!project) return
     saveTex(texRef.current)
@@ -83,7 +82,7 @@ export default function App() {
     exportProject(project.id)
   }, [project])
 
-  // ── Copilot → editor callbacks ───────────────────────────────
+
   // Called when streaming is done — reload canonical file from disk
   const handleStreamDone = useCallback(async () => {
     await reloadTex()
