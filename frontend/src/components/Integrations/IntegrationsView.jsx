@@ -12,7 +12,7 @@ import {
 } from '../../services/api'
 import toast from 'react-hot-toast'
 
-// Try to use date-fns if available, fallback to native
+
 let dateFns = null
 try { dateFns = require('date-fns') } catch {}
 
