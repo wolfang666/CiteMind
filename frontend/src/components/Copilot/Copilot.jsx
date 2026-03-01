@@ -33,7 +33,7 @@ function ToolResult({ result }) {
   )
 }
 
-// "Insert into paper" button — appears on AI messages that have insertable text
+
 function InsertButton({ text, onInsert }) {
   if (!text || text.length < 20) return null
   // Only show if text looks like LaTeX or substantial prose
@@ -90,7 +90,7 @@ export default function Copilot({ project, llm, onStreamDone, onRefresh, onInser
     setMsgs(p => { const u = [...p]; u[u.length - 1] = { ...u[u.length - 1], content, toolResult, streaming }; return u })
   }, [])
 
-  // Handle "Insert into paper" — appends text to the current tex content
+  
   const handleInsert = useCallback((text) => {
     if (!project) { toast.error('Select a project first'); return }
     if (onInsertText) {
@@ -99,7 +99,6 @@ export default function Copilot({ project, llm, onStreamDone, onRefresh, onInser
     }
   }, [project, onInsertText])
 
-  // Stream write section
   const streamWrite = useCallback(async (sectionName, context, instructions = '') => {
     if (!project) { toast.error('Select a project first'); return }
     setBusy(true)
@@ -125,7 +124,7 @@ export default function Copilot({ project, llm, onStreamDone, onRefresh, onInser
     setBusy(false)
   }, [project, onStreamDone, onRefresh, updateLast])
 
-  // Run MCP tool
+  
   const runTool = useCallback(async (toolName, params) => {
     setBusy(true)
     setMsgs(p => [...p, { role: 'assistant', content: '', streaming: true }])
