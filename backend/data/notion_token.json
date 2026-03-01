@@ -1,0 +1,20 @@
+{
+  "access_token": "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",
+  "workspace_id": "553254c0-24f4-8142-a223-0003eca35104",
+  "workspace_name": "Ritesh Gaikwad\u2019s Space",
+  "bot_id": "316254c0-24f4-816e-bed2-00270a0c914d",
+  "owner": {
+    "type": "user",
+    "user": {
+      "object": "user",
+      "id": "2f5d872b-594c-81d5-a693-000283faa045",
+      "name": "Ritesh Gaikwad",
+      "avatar_url": "https://lh3.googleusercontent.com/a/ACg8ocLTIoaf6fg5lTSatr3E2ycqEsJKFLNPZyiUDY5QGnDQJCmrRQ=s100",
+      "type": "person",
+      "person": {
+        "email": "riteshgaikwad43546@gmail.com"
+      }
+    }
+  },
+  "saved_at": "2026-03-01T04:28:10.453365"
+}

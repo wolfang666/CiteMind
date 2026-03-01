@@ -1,0 +1,60 @@
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment variables
+
+
+# Logs
+*.log
+
+# Build files
+build/
+dist/
+*.egg-info/
+
+# Node modules
+node_modules/
+
+# Package lock files (optional)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Next.js
+.next/
+out/
+
+# React build
+build/
+
+
+*.sqlite3
+*.db
+*.db-journal
+
+
+*.pt
+*.pth
+*.h5
+*.ckpt
+*.onnx
+models/
+checkpoints/
+
+.idea/
+.vscode/
+
+.DS_Store
+Thumbs.db
