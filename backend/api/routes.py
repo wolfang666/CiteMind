@@ -1,4 +1,3 @@
-# routes.py
 import json
 import json as _json
 from pathlib import Path
@@ -34,7 +33,6 @@ from tools.export_project import export_project, ExportProjectInput
 
 router = APIRouter()
 
-# ── Schemas ────────────────────────────────────────────────────────
 class ProjectCreate(BaseModel):   name: str
 class TexUpdate(BaseModel):       content: str
 class SectionWrite(BaseModel):    section_name: str; context: str; instructions: str = ""
@@ -50,9 +48,6 @@ class NotionCreate(BaseModel):    title: str; content: str; database_id: str = "
 class GoogleToken(BaseModel):     access_token: str; refresh_token: str = ""
 
 
-# ══════════════════════════════════════════════════════
-# PROJECTS
-# ══════════════════════════════════════════════════════
 
 @router.get("/projects")
 async def list_projects():
@@ -166,11 +161,6 @@ async def export_api(pid: str):
         raise HTTPException(404, r["error"])
     return FileResponse(r["zip_path"], media_type="application/zip", filename=f"project_{pid}.zip")
 
-
-# ══════════════════════════════════════════════════════
-# AI TOOLS
-# ══════════════════════════════════════════════════════
-
 @router.post("/projects/{pid}/write-section")
 async def write_section_api(pid: str, body: SectionWrite):
     tex_path = PROJECTS_DIR / pid / "main.tex"
@@ -213,9 +203,6 @@ async def gen_bib_api(pid: str, body: BibGenerate):
     return {"status": "ok", "bibtex": bibtex}
 
 
-# ══════════════════════════════════════════════════════
-# PAPER SEARCH — all 4 sources
-# ══════════════════════════════════════════════════════
 
 @router.post("/papers/search")
 async def search_papers(body: PaperSearch, db=Depends(get_db)):
@@ -254,11 +241,6 @@ async def delete_paper(pid: int, db=Depends(get_db)):
 async def list_papers(db=Depends(get_db)):
     return await get_all_papers(db)
 
-
-# ══════════════════════════════════════════════════════
-# CHAT + MCP TOOLS
-# ══════════════════════════════════════════════════════
-
 @router.post("/chat")
 async def chat_api(body: ChatMsg, db=Depends(get_db)):
     tools      = [t["name"] for t in list_tools()]
@@ -290,9 +272,6 @@ async def get_tools():
     return list_tools()
 
 
-# ══════════════════════════════════════════════════════
-# GOOGLE CALENDAR INTEGRATION
-# ══════════════════════════════════════════════════════
 
 @router.get("/integrations/calendar")
 async def cal_list(days: int = 7):
@@ -312,10 +291,6 @@ async def google_token(body: GoogleToken):
     return {"status": "ok"}
 
 
-# ═══════════════════════════════════════
-# GOOGLE OAUTH2
-# ═══════════════════════════════════════
-
 from fastapi.responses import RedirectResponse, HTMLResponse
 
 
@@ -330,7 +305,7 @@ async def google_callback(code: str = "", error: str = ""):
     if error:
         return HTMLResponse(
             f"""<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#f56565">
-            <h3>❌ Auth Error</h3><p>{error}</p>
+            <h3>Auth Error</h3><p>{error}</p>
             <script>window.opener&&window.opener.postMessage({{type:'oauth_error',error:'{error}'}},'*');window.close()</script>
             </body></html>"""
         )
@@ -340,14 +315,14 @@ async def google_callback(code: str = "", error: str = ""):
         await exchange_code_for_tokens(code)
         return HTMLResponse(
             """<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#56d4a0">
-            <h3>✅ Google Calendar Connected!</h3><p>You can close this window.</p>
+            <h3> Google Calendar Connected!</h3><p>You can close this window.</p>
             <script>window.opener&&window.opener.postMessage({type:'oauth_success'},'*');setTimeout(()=>window.close(),1500)</script>
             </body></html>"""
         )
     except Exception as e:
         return HTMLResponse(
             f"""<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#f56565">
-            <h3>❌ Error</h3><p>{e}</p>
+            <h3> Error</h3><p>{e}</p>
             <script>window.opener&&window.opener.postMessage({{type:'oauth_error',error:'{e}'}},'*');window.close()</script>
             </body></html>"""
         )
@@ -366,9 +341,6 @@ async def google_disconnect():
     return {"disconnected": True}
 
 
-# ═══════════════════════════════════════
-# NOTION OAUTH2
-# ═══════════════════════════════════════
 
 from config import NOTION_CLIENT_ID, NOTION_REDIRECT_URI
 
@@ -397,7 +369,7 @@ async def notion_callback(code: str = "", error: str = ""):
     if error:
         return HTMLResponse(
             f"""<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#f56565">
-            <h3>❌ Notion Auth Error</h3><p>{error}</p>
+            <h3> Notion Auth Error</h3><p>{error}</p>
             <script>window.opener&&window.opener.postMessage({{type:'oauth_error',error:'{error}'}},'*');window.close()</script>
             </body></html>"""
         )
@@ -408,7 +380,7 @@ async def notion_callback(code: str = "", error: str = ""):
         workspace = data.get("workspace_name", "Notion")
         return HTMLResponse(
             f"""<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#56d4a0">
-            <h3>✅ Notion Connected!</h3>
+            <h3> Notion Connected!</h3>
             <p>Workspace: <strong>{workspace}</strong></p>
             <p>You can close this window.</p>
             <script>window.opener&&window.opener.postMessage({{type:'oauth_success',workspace:'{workspace}'}},'*');setTimeout(()=>window.close(),1500)</script>
@@ -417,7 +389,7 @@ async def notion_callback(code: str = "", error: str = ""):
     except Exception as e:
         return HTMLResponse(
             f"""<html><body style="font-family:sans-serif;padding:24px;background:#0d0f14;color:#f56565">
-            <h3>❌ Error</h3><p>{e}</p>
+            <h3> Error</h3><p>{e}</p>
             <script>window.opener&&window.opener.postMessage({{type:'oauth_error',error:'{e}'}},'*');window.close()</script>
             </body></html>"""
         )
@@ -439,7 +411,7 @@ async def notion_disconnect():
     return {"disconnected": True}
 
 
-# ── Notion pages ──────────────────────────────────────
+
 
 @router.get("/integrations/notion")
 async def notion_list(q: str = ""):
@@ -451,9 +423,6 @@ async def notion_create(body: NotionCreate):
     return await create_notion_page(body.title, body.content, body.database_id)
 
 
-# ══════════════════════════════════════════════════════
-# TODOS
-# ══════════════════════════════════════════════════════
 
 @router.get("/todos")
 async def todos_list(project_id: Optional[int] = None, db=Depends(get_db)):
@@ -477,9 +446,6 @@ async def todo_delete(tid: int, db=Depends(get_db)):
     return await delete_todo(db, tid)
 
 
-# ══════════════════════════════════════════════════════
-# STATUS + NOTIFICATIONS
-# ══════════════════════════════════════════════════════
 
 @router.get("/status")
 async def status_api():
@@ -528,11 +494,6 @@ async def get_notifications(db=Depends(get_db)):
         "action":  "copilot",
     })
     return notifs
-
-
-# ══════════════════════════════════════════════════════
-# STREAMING — realtime LaTeX update via SSE
-# ══════════════════════════════════════════════════════
 
 @router.post("/projects/{pid}/stream-section")
 async def stream_section(pid: str, body: SectionWrite):
@@ -609,10 +570,6 @@ async def stream_section(pid: str, body: SectionWrite):
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
-
-# ══════════════════════════════════════════════════════
-# LATEX COMPILER
-# ══════════════════════════════════════════════════════
 
 @router.post("/projects/{pid}/compile")
 async def compile_latex(pid: str):
