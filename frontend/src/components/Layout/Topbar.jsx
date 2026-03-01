@@ -4,7 +4,7 @@ import { Save, Download, CheckCircle, AlertCircle, Zap, Cpu, Cloud, Bot } from '
 function LLMPill({ llm }) {
   if (!llm) return null
   const cfg = {
-    groq:   { label:'Groq ⚡', c:'var(--a)',    bg:'var(--abg)' },
+    groq:   { label:'Groq ', c:'var(--a)',    bg:'var(--abg)' },
     ollama: { label:'Ollama', c:'var(--blue)',  bg:'var(--bbg)' },
     claude: { label:'Claude', c:'var(--purple)',bg:'var(--pbg)' },
     mock:   { label:'Mock',   c:'var(--t3)',    bg:'var(--bg4)' },
