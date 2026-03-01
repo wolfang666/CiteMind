@@ -80,7 +80,7 @@ function PaperCard({ paper, onRemove, inLibrary, selected, onToggleSelect, showS
               navigator.clipboard?.writeText(`\\cite{${paper.cite_key}}`)
               toast.success(`Copied \\cite{${paper.cite_key}}`)
             }}>
-              {`📋 \\cite{${paper.cite_key}}`}
+              {` \\cite{${paper.cite_key}}`}
             </button>
           )}
         </div>
@@ -117,7 +117,7 @@ export default function PapersLibrary({ project }) {
     try {
       const r = await searchPapers({ query: query.trim(), limit: 5 })
       setResults(r)
-      if (r.total === 0) toast('No results found', { icon: '🔍' })
+      if (r.total === 0) toast('No results found', { icon: '' })
       else toast.success(`Found ${r.total} papers across 4 sources`)
     } catch (e) { toast.error(e.message) }
     setSearching(false)
